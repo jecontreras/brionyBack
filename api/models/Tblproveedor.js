@@ -31,7 +31,8 @@ module.exports = {
         type: 'string'
     },
     prv_activo:{
-        type: 'number'
+        type: 'number',
+        defaultsTo: 0
     },
     prv_observacion:{
         type: 'string'

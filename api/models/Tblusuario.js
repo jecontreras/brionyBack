@@ -18,6 +18,9 @@ module.exports = {
     usu_nombre:{
         type: 'string'
     },
+    codigo:{
+        type: 'string'
+    },
     prf_clave_int:{
         type: 'number'
     },
@@ -61,6 +64,9 @@ module.exports = {
         type: 'string'  
     },
     usu_direccion:{
+        type: 'string'
+    },
+    usu_indicativo: {
         type: 'string'
     },
     usu_telefono:{
@@ -114,6 +120,9 @@ module.exports = {
     usu_servicios_publicos:{
         type: 'string'
     },
+    usu_perfil:{
+        model: 'tblperfil'
+    },
     url_facebook:{
         type: 'string'
     },
@@ -123,6 +132,9 @@ module.exports = {
     url_instagram:{
         type: 'string'
     }
+  },
+    customToJSON: function(){
+    return _.omit(this, ['usu_clave', 'salt']);
   },
 
 };

@@ -15,17 +15,24 @@ module.exports = {
     pro_palabra:{
         type: 'string'
     },
+    foto:{
+      type: 'string'  
+    },
     pro_descripcion:{
         type: 'string'
     },
     pro_marca:{
         type: 'string'
     },
+    pro_categoria:{
+        model: 'tblcategorias'
+    },
     cat_clave_int:{
         type: 'number'
     },
     pro_activo:{
-        type: 'number'
+        type: 'number',
+        defaultsTo: 0
     },
     pro_mostrar_agotado:{
         type: 'number'
@@ -50,6 +57,9 @@ module.exports = {
     },
     pro_pes_compra:{
         type: 'number'
+    },
+    pro_unidad_disponible:{
+        type: 'integer'
     },
     pro_mu_compra:{
         type: 'integer'
@@ -88,7 +98,7 @@ module.exports = {
         type: 'integer'
     },
     pro_sw_tallas:{
-        type: 'integer'
+        model: 'tbltipotalla'
     },
     tit_clave_int:{
         type: 'number'

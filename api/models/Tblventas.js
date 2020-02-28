@@ -10,7 +10,7 @@ module.exports = {
   attributes: {
 
     usu_clave_int:{
-        type: 'number'
+        model: 'tblusuario'
     },  
     ven_nombre_cliente:{
         type: 'string'
@@ -28,7 +28,7 @@ module.exports = {
         type: 'string'
     },
     pro_clave_int:{
-        type: 'number'
+        model: 'tblproductos'
     },
     ven_cantidad:{  
         type: 'number'
@@ -36,11 +36,24 @@ module.exports = {
     ven_precio:{
         type: 'integer'
     },
+    ven_total:{
+        type: 'integer',
+        defaultsTo: 0
+    },
+    ven_ganancias:{
+        type: 'integer',
+        defaultsTo: 0
+    },
+    ven_retirado: {
+        type: 'boolean', defaultsTo: false,
+    },
     ven_sw_aprobada:{
-        type: 'number'
+        type: 'number',
+        defaultsTo: 0    //2 aceptado  
     },
     ven_sw_eliminado:{
-        type: 'number'
+        type: 'number',
+        defaultsTo: 0  //1 eliminado
     },
     ven_imagen_producto:{
         type: 'string'
@@ -52,10 +65,10 @@ module.exports = {
         type: 'string'
     },
     ven_usu_creacion:{
-        type: 'string'
+        model: 'tblusuario'
     },
     ven_usu_actualiz:{
-      type: 'string'  
+        model: 'tblusuario'
     },
     ven_fec_creacion:{
         type: 'string'
@@ -66,9 +79,16 @@ module.exports = {
     ven_tallas:{
         type: 'string'
     },
+    ven_estado:{
+        type: 'integer',
+        defaultsTo: 0
+    },
     nombreProducto:{
         type: 'string'
-    }
+    },
+    ven_observacion:{
+        type: 'string'
+    },
   },
 
 };

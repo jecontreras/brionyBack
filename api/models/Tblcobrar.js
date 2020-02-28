@@ -24,11 +24,15 @@ module.exports = {
     cob_metodo:{
         type: 'string'
     },
+    cob_descripcion:{
+        type: 'string'
+    },
     cob_estado:{
-        type: 'number'
+        type: 'number',
+        defaultsTo:0
     },
     usu_clave_int:{
-        type: 'number'
+        model: 'tblusuario'
     },
     cob_fecha_cobro:{
         type: 'string'
