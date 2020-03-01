@@ -12,7 +12,7 @@ Procedures.file = async(req, res)=>{
       dirname: require('path').resolve(sails.config.appPath, 'assets/images')
     },function (err, uploadFiles) {
       if (err) return res.serverError(err);
-      sails.log.info(98, uploadFiles);
+      //sails.log.info(98, uploadFiles);
       uploadFiles = uploadFiles[0].fd;
       uploadFiles = (uploadFiles.split("images"))[1];
       res.ok('images'+uploadFiles);

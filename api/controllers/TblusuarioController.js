@@ -6,6 +6,7 @@
  */
 
 var Passwords = require('machinepack-passwords');
+const _ = require('lodash');
 let Procedures = Object();
 
 Procedures.register = async(req, res)=>{
@@ -90,6 +91,30 @@ Procedures.querys = async (req, res)=>{
 		row.usu_perfil = await Tblperfil.findOne({ id: row.usu_perfil });
 	}
 	return res.ok(resultado);
+}
+
+Procedures.infoUser = async (req, res)=>{
+  let params = req.allParams();
+  let resultado = Object();
+  let extra = Object();
+  if(params.where) params = params.where;
+
+  resultado = await Tblusuario.findOne({ id: params.id });
+  if( !resultado ) return res.ok( { status:200, data: resultado } );
+
+  extra = await Tblventas.find( { where: { usu_clave_int: resultado.id, ven_estado: 1, ven_sw_eliminado: 0 } });
+  resultado.ganancias = _.sumBy( extra, (row)=> row.ven_ganancias );
+
+  extra = await Tblcobrar.find( { where: { usu_clave_int: resultado.id, cob_estado: 0 } });
+  resultado.cobrado = _.sumBy( extra, (row)=> row.cob_monto );
+
+  extra = await Tblcobrar.find( { where: { usu_clave_int: resultado.id, cob_estado: 2 } });
+  resultado.pagado = _.sumBy( extra, (row)=> row.cob_monto );
+
+  extra = await Tblventas.find( { where: { usu_clave_int: resultado.id, ven_retirado: false, ven_estado: 1, ven_sw_eliminado: 0 } });
+  resultado.porcobrado = ( _.sumBy( extra, (row)=> row.ven_ganancias ) ) - ( resultado.pagado || 0 );
+
+  return res.ok( { status:200, data: resultado } );
 }
 
 module.exports = Procedures;
