@@ -81,7 +81,7 @@ module.exports = {
     },
     ven_estado:{
         type: 'integer',
-        defaultsTo: 0
+        defaultsTo: 0 // 0 activa, 1 Aprobado, 2, Rechazado, 3, eliminado
     },
     nombreProducto:{
         type: 'string'

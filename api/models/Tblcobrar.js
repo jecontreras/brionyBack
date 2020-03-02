@@ -29,7 +29,7 @@ module.exports = {
     },
     cob_estado:{
         type: 'number',
-        defaultsTo:0
+        defaultsTo:0  // 0 activa, 1 Aprobado, 2, Rechazado, 3, eliminado
     },
     usu_clave_int:{
         model: 'tblusuario'

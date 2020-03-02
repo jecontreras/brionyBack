@@ -108,7 +108,7 @@ Procedures.infoUser = async (req, res)=>{
   extra = await Tblcobrar.find( { where: { usu_clave_int: resultado.id, cob_estado: 0 } });
   resultado.cobrado = _.sumBy( extra, (row)=> row.cob_monto );
 
-  extra = await Tblcobrar.find( { where: { usu_clave_int: resultado.id, cob_estado: 2 } });
+  extra = await Tblcobrar.find( { where: { usu_clave_int: resultado.id, cob_estado: 1 } });
   resultado.pagado = _.sumBy( extra, (row)=> row.cob_monto );
 
   extra = await Tblventas.find( { where: { usu_clave_int: resultado.id, ven_retirado: false, ven_estado: 1, ven_sw_eliminado: 0 } });
