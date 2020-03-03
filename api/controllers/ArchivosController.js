@@ -5,9 +5,9 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 let Procedures = Object();
-
+var firebase = require("firebase");
 Procedures.file = async(req, res)=>{
-    let params = req.allParams();
+
     req.file('file').upload({
       dirname: require('path').resolve(sails.config.appPath, 'assets/images')
     },function (err, uploadFiles) {

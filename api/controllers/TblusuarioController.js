@@ -10,9 +10,8 @@ const _ = require('lodash');
 let Procedures = Object();
 
 Procedures.register = async(req, res)=>{
-    let
-        params = req.allParams()
-    ;
+
+    let params = req.allParams();
   // sails.log.info(26, params);
   if((params.usu_clave !== params.usu_confir) && (!params.usu_usuario && !params.email && !params.usu_nombre)) return res.ok({status: 400, data: "error en el envio de los datos"});
     //   Validando si existe  el usuario
@@ -25,9 +24,9 @@ Procedures.register = async(req, res)=>{
     //   Codigo
   function codigo(){return (Date.now().toString(36).substr(2, 3) + Math.random().toString(36).substr(2, 2)).toUpperCase();}
     //   Rol
-  let rol = await Tblperfil.findOne({prf_descripcion: params.rol || "usuario"});
+  let rol = await Tblperfil.findOne({prf_descripcion: params.rol || "vendedor"});
   if(!rol) {
-    rol = await Tblperfil.create({prf_descripcion: params.rol || "usuario"}).fetch();
+    rol = await Tblperfil.create({prf_descripcion: params.rol || "vendedor"}).fetch();
     if(!rol) return res.ok({status: 400, data: "error al crear el rol"});
   }
   params.usu_perfil = rol.id;
@@ -80,6 +79,16 @@ Procedures.login = async function(req, res){
             },
             });
         })
+}
+
+Procedures.cambioPass = async (req, res)=>{
+
+  let params = req.allParams();
+  let resultado = Object();
+  params.password = await Procedures.encryptedPassword(params.password);
+  resultado = await Tblusuario.update({id: params.id},{usu_clave: params.password}).fetch();
+  return res.status(200).send( { status:200, data: resultado } );
+
 }
 
 Procedures.querys = async (req, res)=>{
