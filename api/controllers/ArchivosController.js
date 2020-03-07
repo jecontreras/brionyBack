@@ -6,9 +6,11 @@
  */
 let Procedures = Object();
 var firebase = require("firebase");
+const s3 = require('s3'),
+      skipper = require('skipper-s3');
 Procedures.file = async(req, res)=>{
 
-    req.file('file').upload({
+    /*req.file('file').upload({
       dirname: require('path').resolve(sails.config.appPath, 'assets/images')
     },function (err, uploadFiles) {
       if (err) return res.serverError(err);
@@ -16,7 +18,23 @@ Procedures.file = async(req, res)=>{
       uploadFiles = uploadFiles[0].fd;
       uploadFiles = (uploadFiles.split("images"))[1];
       res.ok('images'+uploadFiles);
+    });*/
+
+    req.file('file').upload({
+      adapter: skipper,
+      key: 'AKIAJ2QRQH7OPAFNIVVA',
+      secret: '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',
+      bucket: 'publihazclick/locompro'
+    }, async (err, filesUploaded) => {
+        if (err) return res.serverError(err);
+        console.log(filesUploaded)
+        return res.ok({
+            status: 200,
+            files: "https://s3.amazonaws.com/publihazclick/locompro/"+filesUploaded[0].fd,
+            textParams: req.allParams()
+        });
     });
+
     /*req.file('file').upload({
         //dirname: require('path').resolve(sails.config.appPath, 'assets/images')
         dirname: require('path').resolve(sails.config.appPath, '.tmp/public/images')
