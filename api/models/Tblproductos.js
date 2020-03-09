@@ -102,6 +102,9 @@ module.exports = {
     },
     tit_clave_int:{
         type: 'number'
+    },
+    listColor:{
+        type: 'json'
     }
 
 
