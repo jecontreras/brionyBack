@@ -8,6 +8,7 @@
 let Procedures = Object();
 const _ = require('lodash');
 const moment = require('moment');
+const momentz = require('moment-timezone');
 
 Procedures.querys = async ( req, res )=>{
 	let params = req.allParams();
@@ -23,9 +24,7 @@ Procedures.create = async ( req, res )=>{
 	let params = req.allParams();
 	let resultado = Object();
 
-	resultado = await Tblcobrar.find({ where: { usu_clave_int: params.usu_clave_int }, sort: 'createdAt desc' });
-	resultado = resultado[0];
-	if(resultado) { if( (await Procedures.validandoRetiro(resultado)) == false ) return res.ok({ status: 200, data: 'no puedes retirar espera 15 dias'}); } 
+	if( (await Procedures.validandoRetiro()) == false ) return res.ok({ status: 200, data: 'no puedes retirar espera 15 dias'});
 	
 	let validadndo = await Procedures.validandoCantidad(params);
 
@@ -77,12 +76,24 @@ Procedures.createFactura = async ( data )=>{
 	return resultado;
 }
 
-Procedures.validandoRetiro = async ( res )=>{
-	let
-	      fecha1 = new Date(res.createdAt), fecha2 = new Date(), diasDif = fecha2.getTime() - fecha1.getTime(), dias = Math.round(diasDif / (1000 * 60 * 60 * 24))
-    ;
-    if(dias < 15) return false;
-    else return true;
+Procedures.validandoRetiro = async ( )=>{
+	let fecha = momentz();
+	fecha.tz('America/Bogota').format('ha z');  // 5am PDT
+	fecha = new moment(fecha).format('DD');
+	if(Number(fecha) >=15 && Number(fecha) <= 18) return true
+	if(Number(fecha) >=30 && Number(fecha) <= 3) return true
+    return true;
+}
+
+Procedures.fechasDisponibles = async  ( req, res)=>{
+	let fecha = momentz();
+	fecha.tz('America/Bogota').format('ha z');  // 5am PDT
+	fecha = new moment(fecha).format('DD');
+	if(Number(fecha) >=15 && Number(fecha) <= 18) return res.ok({status:200, data:true})
+	if(Number(fecha) >=30 && Number(fecha) <= 3) return res.ok({status:200, data:true})
+	return res.ok({status:200, data:false})
+	
+
 }
 
 module.exports = Procedures;
