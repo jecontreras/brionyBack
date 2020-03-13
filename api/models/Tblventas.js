@@ -5,27 +5,38 @@
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
  */
 
+ const moment = require('moment');
 module.exports = {
 
   attributes: {
 
     usu_clave_int:{
-        model: 'tblusuario'
+        model: 'tblusuario',
+        required: true
     },  
+    create:{
+        type: 'string',
+        required: true
+    },
     ven_nombre_cliente:{
-        type: 'string'
+        type: 'string',
+        required: true
     },
     ven_telefono_cliente:{
-        type: 'string'
+        type: 'string',
+        required: true
     },
     ven_direccion_cliente:{
-        type: 'string'
+        type: 'string',
+        required: true
     },
     ven_fecha_venta:{
-        type: 'string'
+        type: 'string',
+        required: true
     },
     ven_tipo:{
-        type: 'string'
+        type: 'string',
+        required: true
     },
     pro_clave_int:{
         model: 'tblproductos'
@@ -34,7 +45,8 @@ module.exports = {
         type: 'number'
     },
     ven_precio:{
-        type: 'integer'
+        type: 'integer',
+        required: true
     },
     ven_total:{
         type: 'integer',
@@ -81,7 +93,7 @@ module.exports = {
     },
     ven_estado:{
         type: 'integer',
-        defaultsTo: 0 // 0 activa, 1 Aprobado, 2, Rechazado, 3, eliminado
+        defaultsTo: 0 // 0 activa, 1 Aprobado, 2, Rechazado, 3, eliminado, 4 Factura Automatica de puntos
     },
     nombreProducto:{
         type: 'string'
@@ -89,7 +101,20 @@ module.exports = {
     ven_observacion:{
         type: 'string'
     },
+    ven_comizionCabeza:{
+        type: 'boolean',
+        defaultsTo: false
+    }
   },
-
+  afterCreate:(valuesToSet, proceed)=>{
+    console.log("values", valuesToSet)
+      valuesToSet.create = new moment().format('DD-MM-YYYY');
+    return proceed();
+  },
+  beforeUpdate:(valuesToSet, proceed)=>{
+      console.log("values", valuesToSet)
+      if( valuesToSet.ven_estado == 1 && !valuesToSet.ven_comizionCabeza ) NivelServices.updateCabeza(valuesToSet);
+    return proceed();
+  }
 };
 

@@ -5,9 +5,7 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 let Procedures = Object();
-var firebase = require("firebase");
-const s3 = require('s3'),
-      skipper = require('skipper-s3');
+const skipper = require('skipper-s3');
 Procedures.file = async(req, res)=>{
 
     /*req.file('file').upload({

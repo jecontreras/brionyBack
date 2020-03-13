@@ -7,6 +7,7 @@
 
 var Passwords = require('machinepack-passwords');
 const _ = require('lodash');
+const moment = require('moment');
 let Procedures = Object();
 
 Procedures.register = async(req, res)=>{
@@ -31,9 +32,11 @@ Procedures.register = async(req, res)=>{
   }
   params.usu_perfil = rol.id;
   params.codigo = codigo();
+  params.nivel = await NivelServices.getNivel();
+  params.nivel = params.nivel.id;
   user = await Tblusuario.create(params).fetch();
   if(!user) return res.badRequest(err);
-  user = await Tblusuario.findOne({id: user.id}).populate('usu_perfil');
+  user = await Tblusuario.findOne({id: user.id}).populate('usu_perfil').populate('cabeza');
   return res.ok({status: 200, 'success': true, data: user});
 }
 Procedures.encryptedPassword = (password) =>{
@@ -54,7 +57,7 @@ Procedures.encryptedPassword = (password) =>{
 }
 
 Procedures.login = async function(req, res){
-    Tblusuario.findOne({usu_email: req.param('usu_email')}).populate('usu_perfil').exec(function(err, user){
+    Tblusuario.findOne({usu_email: req.param('usu_email')}).populate('usu_perfil').populate('cabeza').exec(function(err, user){
         if(err) return res.send({'success': false,'message': 'Peticion fallida','data': err});
         if(!user) return res.send({'success': false,'message': 'Usuario no encontrado','data': user});
         Passwords.checkPassword({
@@ -97,7 +100,8 @@ Procedures.querys = async (req, res)=>{
     console.log("***", params);
 	resultado = await QuerysServices(Tblusuario, params);
 	for(let row of resultado.data){
-		row.usu_perfil = await Tblperfil.findOne({ id: row.usu_perfil });
+    row.usu_perfil = await Tblperfil.findOne({ id: row.usu_perfil });
+    row.cabeza = await Tblusuario.findOne({ id: row.cabeza });
 	}
 	return res.ok(resultado);
 }
@@ -110,20 +114,28 @@ Procedures.infoUser = async (req, res)=>{
 
   resultado = await Tblusuario.findOne({ id: params.id });
   if( !resultado ) return res.ok( { status:200, data: resultado } );
+  //get de puntos 
+  extra = await Puntos.findOne( { where: { usuario: resultado.id }});
+  if(!extra) resultado.gananciasRefereridos = 0;
+  else resultado.gananciasRefereridos = extra.valor;
 
+  //mis ganancias
   extra = await Tblventas.find( { where: { usu_clave_int: resultado.id, ven_estado: 1, ven_sw_eliminado: 0 } });
-  resultado.ganancias = _.sumBy( extra, (row)=> row.ven_ganancias );
-
+  resultado.ganancias = ( _.sumBy( extra, (row)=> row.ven_ganancias ) ) + resultado.gananciasRefereridos;
+  //por cobrar
   extra = await Tblcobrar.find( { where: { usu_clave_int: resultado.id, cob_estado: 0 } });
   resultado.cobrado = _.sumBy( extra, (row)=> row.cob_monto );
-
+  //pagado
   extra = await Tblcobrar.find( { where: { usu_clave_int: resultado.id, cob_estado: 1 } });
   resultado.pagado = _.sumBy( extra, (row)=> row.cob_monto );
-
+  // porcobrar y le resta lo pagadao
   extra = await Tblventas.find( { where: { usu_clave_int: resultado.id, ven_retirado: false, ven_estado: 1, ven_sw_eliminado: 0 } });
-  resultado.porcobrado = ( _.sumBy( extra, (row)=> row.ven_ganancias ) ) - ( resultado.pagado || 0 );
-
+  resultado.porcobrado = (( _.sumBy( extra, (row)=> row.ven_ganancias ) ) + resultado.gananciasRefereridos) - ( resultado.pagado || 0 );
+  
+  //Busca el nivel del usuario
+  resultado.nivel = await NivelServices.nivelUser( resultado );
   return res.ok( { status:200, data: resultado } );
 }
+
 
 module.exports = Procedures;

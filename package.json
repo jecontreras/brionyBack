@@ -11,14 +11,15 @@
     "firebase": "^7.9.3",
     "grunt": "1.0.4",
     "machinepack-passwords": "^2.3.0",
+    "moment": "^2.24.0",
+    "s3": "^4.4.0",
     "sails": "^1.2.3",
     "sails-hook-grunt": "^4.0.0",
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^2.0.0",
-    "skipper-s3": "^0.6.0",
-    "s3": "^4.4.0",
     "sails-mysql": "^1.0.1",
     "sails.io.js": "^1.2.1",
+    "skipper-s3": "^0.6.0",
     "socket.io-client": "^2.3.0"
   },
   "devDependencies": {

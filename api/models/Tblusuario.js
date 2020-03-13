@@ -8,7 +8,12 @@
 module.exports = {
 
   attributes: {
-
+    cabeza: {
+        model: 'Tblusuario'
+    },
+    nivel:{
+        model: 'categorias'
+    },
     usu_usuario:{
         type: 'string'
     },
