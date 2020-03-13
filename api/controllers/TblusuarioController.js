@@ -101,6 +101,7 @@ Procedures.querys = async (req, res)=>{
 	resultado = await QuerysServices(Tblusuario, params);
 	for(let row of resultado.data){
     row.usu_perfil = await Tblperfil.findOne({ id: row.usu_perfil });
+    row.nivel = await Categorias.findOne({ id: row.nivel });
     row.cabeza = await Tblusuario.findOne({ id: row.cabeza });
 	}
 	return res.ok(resultado);

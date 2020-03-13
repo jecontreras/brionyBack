@@ -77,7 +77,7 @@ module.exports = {
         type: 'string'
     },
     ven_usu_creacion:{
-        model: 'tblusuario'
+        type: 'string'
     },
     ven_usu_actualiz:{
         model: 'tblusuario'
@@ -96,6 +96,9 @@ module.exports = {
         defaultsTo: 0 // 0 activa, 1 Aprobado, 2, Rechazado, 3, eliminado, 4 Factura Automatica de puntos
     },
     nombreProducto:{
+        type: 'string'
+    },
+    cob_num_cedula_cliente:{
         type: 'string'
     },
     ven_observacion:{
