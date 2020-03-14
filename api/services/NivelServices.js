@@ -42,7 +42,7 @@ Procedures.getMiNivel = async( countUser )=>{
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 Procedures.asignandoleNivel = async( data )=>{
   let resultado = Object();
-  resultado = await Tblusuario.update({ id:data.id }, { nivel:data.nivel.id }).fetch();
+  resultado = await Tblusuario.update({ id:data.id }, { nivel:data.nivel.id }); //.fetch();
   //console.log(resultado);
   return resultado;
 }
@@ -99,6 +99,7 @@ Procedures.updateCabeza = async( venta )=>{
     }
     userGet.cabeza = resultado.cabeza;
   }
+  await Tblventas.update({ id: venta,id }, { ven_comizionCabeza:true });
   return {};
 }
 

@@ -24,7 +24,7 @@ Procedures.create = async ( req, res )=>{
 	let params = req.allParams();
 	let resultado = Object();
 
-	if( (await Procedures.validandoRetiro()) == false ) return res.ok({ status: 200, data: 'no puedes retirar espera 15 dias'});
+	if( (await Procedures.validandoRetiro()) == false ) return res.ok({ status: 200, data: 'no puedes retirar dias hábiles son los día 12-13-14-15 y 27-28-29-30 del mes '});
 	
 	let validadndo = await Procedures.validandoCantidad(params);
 
@@ -39,15 +39,28 @@ Procedures.create = async ( req, res )=>{
 
 Procedures.validandoCantidad = async ( res )=>{
 	let resultado = Object();
-	resultado = await Tblventas.find({ usu_clave_int: res.usu_clave_int });
-	resultado = _.sumBy( resultado, (row)=> row.ven_ganancias );
-	resultado+= await Procedures.getPuntos( res );
+	let extra = Array();
+
+	extra = await Tblcobrar.find( { where: { usu_clave_int: res.usu_clave_int, cob_estado: 1 } });
+  	resultado.pagado = _.sumBy( extra, (row)=> row.cob_monto );
+	//console.log("************",resultado.pagado)
+
+	extra = await Tblventas.find({ usu_clave_int: res.usu_clave_int, ven_retirado: false, ven_estado: 1, ven_sw_eliminado: 0 });
+	resultado.disponible = _.sumBy( resultado, (row)=> row.ven_ganancias );
+	//console.log("************",resultado.disponible)
+	
+	resultado.disponible+= await Procedures.getPuntos( res );
+
+	resultado = Number( resultado.disponible || 0 ) - Number( resultado.pagado || 0);
+	//console.log("************",resultado)
+	if( 0 >= resultado) return 0;
 	return resultado;
 }
 Procedures.getPuntos = async ( data )=>{
 	let resultado = Object();
 	resultado = await Puntos.findOne({ usuario: data.usu_clave_int });
 	console.log("REs", resultado)
+	if(!resultado) return 0;
 	if(resultado.valor == 0) return 0;
 	let query = {
 		"ven_tipo": "carrito",
@@ -80,17 +93,21 @@ Procedures.validandoRetiro = async ( )=>{
 	let fecha = momentz();
 	fecha.tz('America/Bogota').format('ha z');  // 5am PDT
 	fecha = new moment(fecha).format('DD');
-	if(Number(fecha) >=15 && Number(fecha) <= 18) return true
-	if(Number(fecha) >=30 && Number(fecha) <= 3) return true
+	if(Number(fecha) >=12 && Number(fecha) <= 15) return true
+	if(Number(fecha) >=27 && Number(fecha) <= 30) return true
     return true;
 }
 
 Procedures.fechasDisponibles = async  ( req, res)=>{
+	let params = req.allParams();
 	let fecha = momentz();
+	let resultado = Object();
 	fecha.tz('America/Bogota').format('ha z');  // 5am PDT
 	fecha = new moment(fecha).format('DD');
-	if(Number(fecha) >=15 && Number(fecha) <= 18) return res.ok({status:200, data:true})
-	if(Number(fecha) >=30 && Number(fecha) <= 3) return res.ok({status:200, data:true})
+	if(Number(fecha) >=12 && Number(fecha) <= 15) return res.ok({status:200, data:true})
+	if(Number(fecha) >=27 && Number(fecha) <= 30) return res.ok({status:200, data:true})
+	resultado = await Tblventas.findOne({usu_clave_int: params.user, cob_estado: 0 });
+	if(resultado) return res.ok({status:200, data: false, mensaje: "Tienes un retiro en estado pendiente mas informacion al servicio al cliente +573148487506"});
 	return res.ok({status:200, data:false})
 	
 
