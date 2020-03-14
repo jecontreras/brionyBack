@@ -10,6 +10,7 @@ const _ = require('lodash');
 const moment = require('moment');
 let Procedures = Object();
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Procedures.register = async(req, res)=>{
 
     let params = req.allParams();
@@ -39,6 +40,8 @@ Procedures.register = async(req, res)=>{
   user = await Tblusuario.findOne({id: user.id}).populate('usu_perfil').populate('cabeza');
   return res.ok({status: 200, 'success': true, data: user});
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Procedures.encryptedPassword = (password) =>{
     return new Promise(resolve=>{
         Passwords.encryptPassword({
@@ -56,6 +59,7 @@ Procedures.encryptedPassword = (password) =>{
 
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Procedures.login = async function(req, res){
     Tblusuario.findOne({usu_email: req.param('usu_email')}).populate('usu_perfil').populate('cabeza').exec(function(err, user){
         if(err) return res.send({'success': false,'message': 'Peticion fallida','data': err});
@@ -84,6 +88,7 @@ Procedures.login = async function(req, res){
         })
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Procedures.cambioPass = async (req, res)=>{
 
   let params = req.allParams();
@@ -94,6 +99,7 @@ Procedures.cambioPass = async (req, res)=>{
 
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Procedures.querys = async (req, res)=>{
 	let params = req.allParams();
     let resultado = Object();
@@ -107,6 +113,7 @@ Procedures.querys = async (req, res)=>{
 	return res.ok(resultado);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Procedures.infoUser = async (req, res)=>{
   let params = req.allParams();
   let resultado = Object();
@@ -138,5 +145,15 @@ Procedures.infoUser = async (req, res)=>{
   return res.ok( { status:200, data: resultado } );
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Procedures.guardarPunto = async(req, res)=>{
+  let params = req.allParams();
+  let resultado = Object();
+  let user = await Tblusuario.findOne( { id: params.user } );
+  if(!user) return res.status(400).send({ status:400, data: "Error de Usuario no Encontrado"});
+  resultado = await NivelServices.procesoGanacias( user, { id: 1, ven_ganancias: params.ganancias }, { valor: 100 } );
+  return res.status(200).send( { status:200, data:"ok" });
+}
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module.exports = Procedures;

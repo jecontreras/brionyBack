@@ -104,16 +104,24 @@ Procedures.updateCabeza = async( venta )=>{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 Procedures.submitGanancias = async( user, venta, profundidad )=>{
-  let resultado = Object();
   let comision = user.nivel.precioNivel.find( row => Number( row.profundidad ) == Number( profundidad ) );
   if(!comision) return {};
+  venta = {
+    id: venta.id,
+    ven_ganancias: ( Number( venta.ven_ganancias ) * Number( comision.valor ) ) / 100
+  }
+  return await Procedures.procesoGanacias( user, venta, comision );
+}
+
+Procedures.procesoGanacias = async ( user, venta, comision )=>{
+  let resultado = Object();
   let data = {
     usuario: user.id,
     venta: venta.id,
     porcentaje: comision.valor,
     tipo: 0,
     estado: 0,
-    valor: ( Number( venta.ven_ganancias ) * Number( comision.valor ) ) / 100,
+    valor: venta.ven_ganancias,
     valorAnterior: 0,
     valorTotal: 0
   };
@@ -123,7 +131,7 @@ Procedures.submitGanancias = async( user, venta, profundidad )=>{
   data.valor = data.valorTotal;
   await Procedures.createPuntos( data );
   //console.log( "*****", resultado );
-  return resultado
+  return resultado;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
