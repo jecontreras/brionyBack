@@ -99,7 +99,7 @@ Procedures.updateCabeza = async( venta )=>{
     }
     userGet.cabeza = resultado.cabeza;
   }
-  await Tblventas.update({ id: venta,id }, { ven_comizionCabeza:true });
+  await Tblventas.update({ id: venta.id }, { ven_comizionCabeza:true });
   return {};
 }
 

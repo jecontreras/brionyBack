@@ -45,14 +45,14 @@ Procedures.validandoCantidad = async ( res )=>{
   	resultado.pagado = _.sumBy( extra, (row)=> row.cob_monto );
 	//console.log("************",resultado.pagado)
 
-	extra = await Tblventas.find({ usu_clave_int: res.usu_clave_int, ven_retirado: false, ven_estado: 1, ven_sw_eliminado: 0 });
-	resultado.disponible = _.sumBy( resultado, (row)=> row.ven_ganancias );
-	//console.log("************",resultado.disponible)
+	extra = await Tblventas.find({ usu_clave_int: res.usu_clave_int, ven_estado: 1, ven_retirado:false, ven_sw_eliminado: 0 });
+	resultado.disponible = _.sumBy( extra, (row)=> row.ven_ganancias );
+	//console.log("************",resultado.disponible, extra)
 	
 	resultado.disponible+= await Procedures.getPuntos( res );
 
 	resultado = Number( resultado.disponible || 0 ) - Number( resultado.pagado || 0);
-	//console.log("************",resultado)
+	console.log("************",resultado)
 	if( 0 >= resultado) return 0;
 	return resultado;
 }
