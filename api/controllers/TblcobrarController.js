@@ -106,7 +106,7 @@ Procedures.fechasDisponibles = async  ( req, res)=>{
 	fecha = new moment(fecha).format('DD');
 	if(Number(fecha) >=12 && Number(fecha) <= 15) return res.ok({status:200, data:true})
 	if(Number(fecha) >=27 && Number(fecha) <= 30) return res.ok({status:200, data:true})
-	resultado = await Tblventas.findOne({usu_clave_int: params.user, cob_estado: 0 });
+	resultado = await Tblventas.findOne({usu_clave_int: params.user, ven_estado: 0 });
 	if(resultado) return res.ok({status:200, data: false, mensaje: "Tienes un retiro en estado pendiente mas informacion al servicio al cliente +573148487506"});
 	return res.ok({status:200, data:false})
 	
