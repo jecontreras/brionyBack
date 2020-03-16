@@ -23,6 +23,9 @@ module.exports = {
     usu_nombre:{
         type: 'string'
     },
+    usu_fecha_nacimiento:{
+        type: 'string'
+    },
     codigo:{
         type: 'string'
     },

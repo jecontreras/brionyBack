@@ -19,8 +19,8 @@ module.exports = {
       model: 'tblventas'
     },
     view:{
-      type: 'boolean',
-      defaultsTo: false
+      type: 'integer',
+      defaultsTo: 0 // true 1 //false 0
     },
     user:{
       model: 'tblusuario'
