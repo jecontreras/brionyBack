@@ -13,7 +13,7 @@ module.exports = {
         type: 'string'
     },
     tal_tipo:{
-        type: 'number'
+        model: 'Tbltipotalla'
     },
     tal_sw_activo:{
         type: 'integer'
