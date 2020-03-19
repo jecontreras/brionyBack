@@ -12,6 +12,7 @@ Procedures.querys = async (req, res)=>{
 	resultado = await QuerysServices(Tblproductos, params);
 	for(let row of resultado.data){
 		row.cat_clave_int = await Tblcategorias.findOne({where:{id: row.cat_clave_int}});
+		//row.listTallas = await Tbltallas.find({ tal_tipo: row.pro_sw_tallas })
 	}
 	return res.ok(resultado);
 }

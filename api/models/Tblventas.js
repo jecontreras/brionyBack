@@ -26,6 +26,9 @@ module.exports = {
         type: 'string',
         required: true
     },
+    ven_ciudad:{
+        type: 'string'
+    },
     ven_direccion_cliente:{
         type: 'string',
         required: true

@@ -17,6 +17,18 @@ module.exports = {
     cob_num_cuenta:{
         type: 'string'
     },
+    cob_numero_cedula:{
+      type: 'string'  
+    },
+    cob_pais:{
+      type: 'string'    
+    },
+    cob_ciudad_corregimiento:{
+      type: 'string'    
+    },
+    cob_nombre_banco:{
+      type: 'string'      
+    },
     cob_monto:{
         type: 'integer',
         defaultsTo:0
