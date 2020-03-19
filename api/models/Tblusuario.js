@@ -36,7 +36,8 @@ module.exports = {
         type: 'number'
     },
     usu_email:{
-        type: 'string'
+        type: 'string',
+        unique: true
     },
     ven_clave_int:{
         type: 'number'
