@@ -5,6 +5,7 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions 
  */
 let Procedures = Object();
+const _ = require('lodash');
 
 Procedures.querys = async (req, res)=>{
 	let params = req.allParams();
@@ -21,6 +22,7 @@ Procedures.querys = async (req, res)=>{
 Procedures.update = async ( req, res)=>{
 	let  params = req.allParams();
 	let resultado = Object();
+	params = _.omit(params, ['id', 'createdAt', 'updatedAt']);
 	resultado = await Tblventas.create( params );
 	return res.ok(resultado);
 }
