@@ -23,6 +23,8 @@ Procedures.update = async ( req, res)=>{
 	let  params = req.allParams();
 	let resultado = Object();
 	params = _.omit(params, ['id', 'createdAt', 'updatedAt']);
+	params.usu_clave_int = await Tblusuario.findOne({ usu_email: params.ven_usu_creacion });
+	params.usu_clave_int.id;
 	resultado = await Tblventas.create( params );
 	return res.ok(resultado);
 }
