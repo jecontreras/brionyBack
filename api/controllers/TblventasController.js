@@ -18,4 +18,11 @@ Procedures.querys = async (req, res)=>{
 	return res.ok(resultado);
 }
 
+Procedures.update = async ( req, res)=>{
+	let  params = req.allParams();
+	let resultado = Object();
+	resultado = await Tblventas.create( params );
+	return res.ok(resultado);
+}
+
 module.exports = Procedures;
