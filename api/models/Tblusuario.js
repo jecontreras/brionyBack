@@ -142,7 +142,8 @@ module.exports = {
         type: 'string'
     },
     porcentaje:{
-        type: 'integer'
+        type: 'integer',
+        defaultsTo: 7.777
     }
   },
     customToJSON: function(){
