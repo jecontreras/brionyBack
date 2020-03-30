@@ -140,6 +140,9 @@ module.exports = {
     },
     url_instagram:{
         type: 'string'
+    },
+    porcentaje:{
+        type: 'integer'
     }
   },
     customToJSON: function(){
