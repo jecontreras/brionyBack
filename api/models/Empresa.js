@@ -48,6 +48,9 @@ module.exports = {
     },
     portada4:{
         type: 'string'
+    },
+    dominio:{
+        type: 'string'
     }
   },
 
