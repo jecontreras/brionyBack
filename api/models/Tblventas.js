@@ -110,6 +110,15 @@ module.exports = {
     ven_comizionCabeza:{
         type: 'boolean',
         defaultsTo: false
+    },
+    ven_barrio:{
+        type: 'string'
+    },
+    ven_numero_guia:{
+        type: 'string'
+    },
+    ven_imagen_guia:{
+        type: 'string'
     }
   },
   afterCreate:(valuesToSet, proceed)=>{
