@@ -119,15 +119,17 @@ module.exports = {
     },
     ven_imagen_guia:{
         type: 'string'
+    },
+    ven_subVendedor:{
+        type: 'integer',
+        defaultsTo: 0 // 0 no, 1 subVendedor
     }
   },
   afterCreate:(valuesToSet, proceed)=>{
-    console.log("values", valuesToSet)
       valuesToSet.create = new moment().format('DD-MM-YYYY');
     return proceed();
   },
   beforeUpdate:(valuesToSet, proceed)=>{
-      console.log("values", valuesToSet)
       if( valuesToSet.ven_estado == 1 && !valuesToSet.ven_comizionCabeza ) NivelServices.updateCabeza(valuesToSet);
     return proceed();
   }
