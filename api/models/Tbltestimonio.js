@@ -14,7 +14,11 @@ module.exports = {
     },
     descripcion:{
       type: 'string'
-    }
+    },
+    estado:{
+      type: 'integer',
+      defaultsTo: 0 // 0 activa, 1 eliminado,
+  },
 
   },
 
