@@ -17,7 +17,7 @@ module.exports = {
     },
     estado:{
       type: 'integer',
-      defaultsTo: 0 // 0 activa, 1 eliminado,
+      defaultsTo: 0 // 0 activa, 1 eliminado // 1 aprobando,
   },
 
   },
