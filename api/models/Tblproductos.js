@@ -105,6 +105,13 @@ module.exports = {
     },
     listColor:{
         type: 'json'
+    },
+    checkMayor:{
+        type: 'number',
+        defaultsTo: 0 // 0 inactivo, 1 activo
+    },
+    listPrecios:{
+        type: 'json'
     }
 
 
