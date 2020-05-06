@@ -20,8 +20,8 @@ Procedures.file = async(req, res)=>{
 
     req.file('file').upload({
       adapter: skipper,
-      key: 'AKIAJUJX6GGN35GSZ6HA',
-      secret: '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',
+      key: 'AKIAIODH7ZEL3C6GG3AA',
+      secret: '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',
       bucket: 'publihazclick/locompro'
     }, async (err, filesUploaded) => {
         if (err) return res.serverError(err);
