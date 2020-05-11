@@ -67,7 +67,7 @@ module.exports = {
         type: 'number'
     },
     usu_pais:{
-        type: 'number'
+        type: 'string'
     },
     usu_ciudad:{
         type: 'string'  
