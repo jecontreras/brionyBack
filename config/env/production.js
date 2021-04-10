@@ -49,7 +49,7 @@ module.exports = {
     default: {
       adapter: 'sails-mysql',
       // url: 'mysql://jose:123456@locomproaqui.com/zoebodegas',
-      url: 'mysql://fuiozxqtec3trsal:y5id1ijgdx7mp17a@sq65ur5a5bj7flas.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/sbrk2a7q2xeoljlo'
+      url: 'mysql://ljvjjyz2pkun769m:wmfmiqbx30io46tj@xlf3ljx3beaucz9x.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/x5zbf4uxubpmca9h'
       // adapter: 'sails-mysql',
       // url: 'mysql://user:password@host:port/database',
       //--------------------------------------------------------------------------
