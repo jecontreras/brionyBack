@@ -17,7 +17,7 @@ module.exports = {
     },
     foto:{
       type: 'string'  
-    },
+    }, 
     pro_descripcion:{
         type: 'string'
     },
