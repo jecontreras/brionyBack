@@ -19,19 +19,20 @@ Procedures.file = async(req, res)=>{
     });*/
 
     req.file('file').upload({
-      adapter: skipper,
-      key: '',
-      secret: '',
-      bucket: ''
-    }, async (err, filesUploaded) => {
-        if (err) return res.serverError(err);
-        console.log(filesUploaded)
-        return res.ok({
-            status: 200,
-            files: "https://s3.amazonaws.com/publihazclick/locompro/"+filesUploaded[0].fd,
-            textParams: req.allParams()
-        });
-    });
+        adapter: skipper,
+        key: 'AKIATMFRZCCHDIQK757K',
+        secret: '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',
+        s3params:{ ACL: 'public-read' },
+        bucket: 'fotosmas',
+      }, async (err, filesUploaded) => {
+          if (err) return res.serverError(err);
+           console.log(filesUploaded[0].extra)
+          return res.ok({
+              status: 200,
+              files: filesUploaded[0].extra.Location,
+              textParams: req.allParams()
+          });
+      });
 
     /*req.file('file').upload({
         //dirname: require('path').resolve(sails.config.appPath, 'assets/images')
