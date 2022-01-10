@@ -24,7 +24,7 @@ Procedures.nextTridy = async ()=>{
 				"pro_mostrar_agotado": 0,
 				"pro_descripcionbreve": "",
 				"pro_codigo": "3DBG1F",
-				"pro_usu_creacion": 0,
+				"pro_usu_creacion": detalle.id_tienda,
 				"pro_usu_actualiz": "",
 				"pro_fec_actualiz": "",
 				"pro_uni_compra": 0,
@@ -62,7 +62,8 @@ Procedures.nextTridy = async ()=>{
 					pro_mp_compra: data.pro_mp_compra,
 					pro_descripcion: data.pro_descripcion,
 					foto: data.foto,
-					pro_nombre: data.pro_nombre
+					pro_nombre: data.pro_nombre,
+					pro_usu_creacion: data.pro_usu_creacion,
 				}
 			);
 		}
@@ -169,6 +170,105 @@ Procedures.getArticulosDetalles = async ( id ) => {
 		'referer': 'https://triidy.com/',
 		'accept-language': 'es-US,es-419;q=0.9,es;q=0.8,en;q=0.7,und;q=0.6,pl;q=0.5,pt;q=0.4',
 		'Cookie': 'AWSALB=zxWPPHJxI34x1dwlAbTIPJS20zfRXSt44edXE7hna0IFsBP6NHXhpA8b1XqKDvqe5CH3HpfR0JEAQIiBs7pVvb+kQMK6uy02k1EC4LytKRpmvy6RB5KPItZGs3UG; AWSALBCORS=zxWPPHJxI34x1dwlAbTIPJS20zfRXSt44edXE7hna0IFsBP6NHXhpA8b1XqKDvqe5CH3HpfR0JEAQIiBs7pVvb+kQMK6uy02k1EC4LytKRpmvy6RB5KPItZGs3UG'
+	};
+
+	resultado = await HttpService.request(url, "", false, headers, {}, 'GET');
+	//console.log("************", resultado)
+	try {
+		return JSON.parse(resultado) || [];
+	} catch (error) {
+		return [];
+	}
+}
+
+Procedures.procesoCategoria = async()=>{
+	let resultado = Object();
+	resultado = await Procedures.GetCategorias();
+	if( !resultado[0] ) return false;
+	for( let row of resultado ){
+		let filtro = await Tblcategorias.find( { id: row.id_categoria } );
+		filtro = filtro[0];
+		if( filtro ) {
+			await Tblcategorias.update( { id: row.id_categoria }, { cat_nombre: row.nombre } )
+		}else{
+			await Tblcategorias.create( {
+				id: row.id_categoria,
+				cat_nombre: row.nombre,
+				cat_palabra: _.toLower( row.nombre ),
+				cat_descripcion: row.nombre,
+				cat_usu_actualiz: 1
+			});
+		}
+	}
+	return true;
+}
+
+Procedures.GetCategorias = async( )=>{
+	let resultado = Array();
+	let url = `https://triidy.info/serviciosTriidy/Servicio.asmx/GetCategoriaProductos?token=jq2gh66o6dxr.54`;
+	let headers = {
+		'authority': 'triidy.info',
+		'sec-ch-ua': '" Not;A Brand";v="99", "Google Chrome";v="97", "Chromium";v="97"',
+		'accept': 'application/json, text/plain, */*',
+		'sec-ch-ua-mobile': '?0',
+		'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
+		'sec-ch-ua-platform': '"Windows"',
+		'origin': 'https://triidy.com',
+		'sec-fetch-site': 'cross-site',
+		'sec-fetch-mode': 'cors',
+		'sec-fetch-dest': 'empty',
+		'referer': 'https://triidy.com/',
+		'accept-language': 'es-US,es-419;q=0.9,es;q=0.8,en;q=0.7,und;q=0.6,pl;q=0.5,pt;q=0.4',
+		'Cookie': 'AWSALB=dvuerNQYJs8t3oAYkc+v2xzLCZEqyWwkjc6omOni38C6SRUE9DKG/Jyb1sOtpIWOcjQQ1kUQWpjW4lKfydFled15TtGvti57drn35A2YE3T+Cpui3HDw2pHS3MMl; AWSALBCORS=dvuerNQYJs8t3oAYkc+v2xzLCZEqyWwkjc6omOni38C6SRUE9DKG/Jyb1sOtpIWOcjQQ1kUQWpjW4lKfydFled15TtGvti57drn35A2YE3T+Cpui3HDw2pHS3MMl'
+	};
+
+	resultado = await HttpService.request(url, "", false, headers, {}, 'GET');
+	//console.log("************", resultado)
+	try {
+		return JSON.parse(resultado) || [];
+	} catch (error) {
+		return [];
+	}
+}
+
+Procedures.procesoProvedor = async()=>{
+	let resultado = Object();
+	resultado = await Procedures.GetProvedor();
+	if( !resultado[0] ) return false;
+	for( let row of resultado ){
+		let filtro = await Tblproveedor.find( { id: row.id_tienda } );
+		filtro = filtro[0];
+		if( filtro ) {
+			await Tblproveedor.update( { id: row.id_tienda }, { cat_nombre: row.nombre } )
+		}else{
+			await Tblproveedor.create( {
+				id: row.id_tienda,
+				prv_nombre: row.nombre_tienda,
+				prv_email: _.toLower( row.nombre_tienda ),
+				prv_nro_docum: row.logo,
+			});
+		}
+	}
+	return true;
+}
+
+Procedures.GetProvedor = async( )=>{
+	let resultado = Array();
+	let url = `https://triidy.info/serviciosTriidy/Servicio.asmx/GetProveedor?id_tienda=9289&token=jq2gh66o6dxr.54&nombre_pais=Colombia`;
+	let headers = {
+		'authority': 'triidy.info',
+		'sec-ch-ua': '" Not;A Brand";v="99", "Google Chrome";v="97", "Chromium";v="97"',
+		'accept': 'application/json, text/plain, */*',
+		'sec-ch-ua-mobile': '?0',
+		'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
+		'sec-ch-ua-platform': '"Windows"',
+		'origin': 'https://triidy.com',
+		'sec-fetch-site': 'cross-site',
+		'sec-fetch-mode': 'cors',
+		'sec-fetch-dest': 'empty',
+		'referer': 'https://triidy.com/',
+		'accept-language': 'es-US,es-419;q=0.9,es;q=0.8,en;q=0.7,und;q=0.6,pl;q=0.5,pt;q=0.4',
+		'Cookie': 'AWSALB=NpaBWkSWt9D45SvRx2Z54HTC4a2PdpYr1pN/SLgVFtVFAqZtP0ySqIGge/uycJTaHmN8czJ6pNbN60c7kMCozESTCaQzE/L/DoVD3PKdRYK4Afap+ckmOnO5PnhK; AWSALBCORS=NpaBWkSWt9D45SvRx2Z54HTC4a2PdpYr1pN/SLgVFtVFAqZtP0ySqIGge/uycJTaHmN8czJ6pNbN60c7kMCozESTCaQzE/L/DoVD3PKdRYK4Afap+ckmOnO5PnhK'
 	};
 
 	resultado = await HttpService.request(url, "", false, headers, {}, 'GET');

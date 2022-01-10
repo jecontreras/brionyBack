@@ -44,7 +44,7 @@ module.exports = {
         type: 'string'
     },
     pro_usu_creacion:{
-        type: 'number'
+        model: "Tblproveedor"
     },
     pro_usu_actualiz:{
         type: 'string'

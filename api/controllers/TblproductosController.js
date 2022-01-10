@@ -14,17 +14,16 @@ Procedures.querys = async (req, res) => {
 	resultado = await QuerysServices(Tblproductos, params);
 	for (let row of resultado.data) {
 		if (row.cat_clave_int) row.cat_clave_int = await Tblcategorias.findOne({ where: { id: row.cat_clave_int } });
-		if (row.pro_sw_tallas) {
-			row.listTallas = await Tbltallas.find({ tal_tipo: row.pro_sw_tallas });
-			row.listTallas = _.orderBy(row.listTallas, ['tal_descripcion'], ['asc']);
-		}
 		if (row.pro_categoria) row.pro_categoria = await Tblcategorias.findOne({ where: { id: row.pro_categoria } });
+		if (row.pro_usu_creacion) row.pro_usu_creacion = await Tblproveedor.findOne({ where: { id: row.pro_usu_creacion } });
 	}
 	return res.ok(resultado);
 }
 Procedures.tridy = async (req, res) => {
 //Procedures.querys = async (req, res) => {
 	let params = req.allParams();
+	await TblproductosServices.procesoCategoria();
+	await TblproductosServices.procesoProvedor();
 	await TblproductosServices.nextTridy();	
 	return res.status(200).send({ status: 200, data: data1 });
 

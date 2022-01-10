@@ -31,6 +31,7 @@ module.exports.tarea = async function() {
         
         console.log("*******************Sincronisador de productos***************")
         await TblproductosServices.nextTridy( );
+        await TblproductosServices.procesoCategoria();
     }
     //cron.AgregarTarea(tarea)
 
