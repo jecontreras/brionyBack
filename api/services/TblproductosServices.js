@@ -14,60 +14,65 @@ Procedures.nextTridy = async ()=>{
 			let detalle = ( await Procedures.getArticulosDetalles( key.id_producto ) ) || false;
 			detalle = detalle[0];
 			console.log("*************", detalle )
-			let data = {
-				"id": detalle.id_producto,
-				"pro_nombre": detalle.nombre,
-				"foto": detalle.imagen,
-				"pro_descripcion": detalle.descripcion + "  "+ detalle.modo_uso || '',
-				"cat_clave_int": 0,
-				"pro_activo": 0,
-				"pro_mostrar_agotado": 0,
-				"pro_descripcionbreve": "",
-				"pro_codigo": "3DBG1F",
-				"pro_usu_creacion": detalle.id_tienda,
-				"pro_usu_actualiz": "",
-				"pro_fec_actualiz": "",
-				"pro_uni_compra": 0,
-				"pro_pes_compra": 0,
-				"pro_unidad_disponible": 0,
-				"pro_mu_compra": 0,
-				"pro_mp_compra": detalle.costo,
-				"pro_uni_venta": detalle.precio_venta,
-				"pro_marca": detalle.tiendas_que_lo_venden, // empresa que lo vende
-				"pro_pes_venta": 0,
-				"pro_mu_venta": detalle.total_vendidos, // total vendios
-				"pro_mp_venta": 0,
-				"pro_reserva": 0,
-				"pro_estado": 0,
-				"pro_tamano": detalle.alto,
-				"pro_kilo": 0,
-				"pro_und_kilo": 0,
-				"pro_precio_venta_cliente": 0,
-				"tit_clave_int": 0,
-				"listColor": null,
-				"checkMayor": 0,
-				"listPrecios": null,
-				"pro_categoria": detalle.id_categoria,
-				"pro_sw_tallas": 3
-			}
-			let filtro = await Tblproductos.find( { where: { id: detalle.id_producto } } );
-			filtro = filtro[0];
-			if( !filtro ) await Tblproductos.create( data );
-			else Tblproductos.update( { id: detalle.id_producto }, 
-				{ 
-					pro_mu_venta: data.pro_mu_venta,
-					pro_categoria: data.pro_categoria,
-					pro_marca: data.pro_marca,
-					pro_uni_venta: data.pro_uni_venta,
-					pro_mp_compra: data.pro_mp_compra,
-					pro_descripcion: data.pro_descripcion,
-					foto: data.foto,
-					pro_nombre: data.pro_nombre,
-					pro_usu_creacion: data.pro_usu_creacion,
+			try {
+				let data = {
+					"id": detalle.id_producto,
+					"pro_nombre": detalle.nombre,
+					"foto": detalle.imagen,
+					"pro_descripcion": detalle.descripcion + "  "+ detalle.modo_uso || '',
+					"cat_clave_int": 0,
+					"pro_activo": 0,
+					"pro_mostrar_agotado": 0,
+					"pro_descripcionbreve": "",
+					"pro_codigo": "3DBG1F",
+					"pro_usu_creacion": detalle.id_tienda,
+					"pro_usu_actualiz": "",
+					"pro_fec_actualiz": "",
+					"pro_uni_compra": 0,
+					"pro_pes_compra": 0,
+					"pro_unidad_disponible": 0,
+					"pro_mu_compra": 0,
+					"pro_mp_compra": detalle.costo,
+					"pro_uni_venta": detalle.precio_venta,
+					"pro_marca": detalle.tiendas_que_lo_venden, // empresa que lo vende
+					"pro_pes_venta": 0,
+					"pro_mu_venta": detalle.total_vendidos, // total vendios
+					"pro_mp_venta": 0,
+					"pro_reserva": 0,
+					"pro_estado": 0,
+					"pro_tamano": detalle.alto,
+					"pro_kilo": 0,
+					"pro_und_kilo": 0,
+					"pro_precio_venta_cliente": 0,
+					"tit_clave_int": 0,
+					"listColor": null,
+					"checkMayor": 0,
+					"listPrecios": null,
+					"pro_categoria": detalle.id_categoria || 2,
+					"pro_sw_tallas": 3
 				}
-			);
+				let filtro = await Tblproductos.find( { where: { id: detalle.id_producto } } );
+				filtro = filtro[0];
+				if( !filtro ) await Tblproductos.create( data );
+				else Tblproductos.update( { id: detalle.id_producto }, 
+					{ 
+						pro_mu_venta: data.pro_mu_venta,
+						pro_categoria: data.pro_categoria,
+						pro_marca: data.pro_marca,
+						pro_uni_venta: data.pro_uni_venta,
+						pro_mp_compra: data.pro_mp_compra,
+						pro_descripcion: data.pro_descripcion,
+						foto: data.foto,
+						pro_nombre: data.pro_nombre,
+						pro_usu_creacion: data.pro_usu_creacion,
+					}
+				);
+			} catch (error) {
+				
+			}
 		}
 	}
+	console.log("******Completado...........")
 	return true;
 }
 

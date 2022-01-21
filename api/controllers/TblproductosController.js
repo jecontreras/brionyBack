@@ -22,10 +22,10 @@ Procedures.querys = async (req, res) => {
 Procedures.tridy = async (req, res) => {
 //Procedures.querys = async (req, res) => {
 	let params = req.allParams();
+	res.status(200).send({ status: 200, data: "ok" });
 	await TblproductosServices.procesoCategoria();
 	await TblproductosServices.procesoProvedor();
 	await TblproductosServices.nextTridy();	
-	return res.status(200).send({ status: 200, data: data1 });
 
 }
 
