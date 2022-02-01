@@ -196,6 +196,13 @@ Procedures.procesoCategoria = async()=>{
 		if( filtro ) {
 			await Tblcategorias.update( { id: row.id_categoria }, { cat_nombre: row.nombre } )
 		}else{
+			console.log("************",{
+				id: row.id_categoria,
+				cat_nombre: row.nombre,
+				cat_palabra: _.toLower( row.nombre ),
+				cat_descripcion: row.nombre,
+				cat_usu_actualiz: 1
+			})
 			await Tblcategorias.create( {
 				id: row.id_categoria,
 				cat_nombre: row.nombre,
