@@ -4,16 +4,19 @@ const _ = require('lodash');
 Procedures.nextTridy = async ()=>{
 	let resultado = Object();
 	resultado = await Procedures.provedor();
-	let data1 = [];
+	let data1 = [ { id_tienda:8368 } ];
+	resultado = data1;
 	for( let row of resultado ){
+		row.articulos = ( await Procedures.articuloProvedor( row.id_tienda ) ) || [];
 		//console.log("*********", row)
-		row.articulos = await Procedures.articuloProvedor( row.id_tienda );
 	}
 	for (let row of resultado ){
+		console.log("///////////////", row.articulos.length )
+		if( !row.articulos ) continue;
 		for( let key of row.articulos ){
 			let detalle = ( await Procedures.getArticulosDetalles( key.id_producto ) ) || false;
 			detalle = detalle[0];
-			console.log("*************", detalle )
+			//console.log("*************", detalle )
 			try {
 				let data = {
 					"id": detalle.id_producto,
@@ -53,6 +56,7 @@ Procedures.nextTridy = async ()=>{
 				}
 				let filtro = await Tblproductos.find( { where: { id: detalle.id_producto } } );
 				filtro = filtro[0];
+				console.log("*****111", filtro )
 				if( !filtro ) await Tblproductos.create( data );
 				else Tblproductos.update( { id: detalle.id_producto }, 
 					{ 

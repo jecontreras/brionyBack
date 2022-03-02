@@ -18,7 +18,16 @@ module.exports = {
     estado:{
       type: 'integer',
       defaultsTo: 0 // 0 activa, 1 eliminado // 1 aprobando,
-  },
+    },
+    nombre:{
+      type: 'string'
+    },
+    email:{
+      type: 'string'
+    },
+    productos:{
+      model: 'tblproductos'
+    }
 
   },
 

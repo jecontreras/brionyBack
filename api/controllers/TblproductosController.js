@@ -14,16 +14,23 @@ Procedures.querys = async (req, res) => {
 	console.log("***", params);
 	resultado = await QuerysServices(Tblproductos, params);
 	for (let row of resultado.data) {
-		row.listComentarios = _.orderBy( Procedures.comentarios, ['posicion', 'age'] );
+		row.listComentarios = _.orderBy( await Procedures.comentarios( row.id ), ['posicion', 'age'] );
 		if (row.cat_clave_int) row.cat_clave_int = await Tblcategorias.findOne({ where: { id: row.cat_clave_int } });
 		if (row.pro_categoria) row.pro_categoria = await Tblcategorias.findOne({ where: { id: row.pro_categoria } });
 		if (row.pro_usu_creacion) row.pro_usu_creacion = await Tblproveedor.findOne({ where: { id: row.pro_usu_creacion } });
+		if( row.pro_sw_tallas && !row.listaTallas ) {
+			row.listTallas = await Tbltallas.find({ tal_tipo: row.pro_sw_tallas });
+			row.listTallas = _.orderBy( row.listTallas, ['tal_descripcion'], ['asc'] );
+		}
+		if( row.listaTallas ) row.listTallas = _.orderBy( row.listaTallas, ['tal_descripcion'], ['asc'] );
 	}
 	return res.ok(resultado);
 }
 
-Procedures.comentarios = ()=>{
-	return [
+Procedures.comentarios = async ( id )=>{
+	let resultado = await Tbltestimonio.find( { productos: id } );
+	let dataFinix = [];
+	dataFinix =  [
 		{
 			nombre: "Antonio",
 			fecha: new moment().format("DD/MM/YYYY"),
@@ -88,6 +95,17 @@ Procedures.comentarios = ()=>{
 			foto: "./assets/noimagen.jpg"
 		}
 	];
+	let result = _.map( resultado, ( key )=>{
+		return {
+			nombre: key.nombre,
+			fecha: new moment( key.createdAt ).format("DD/MM/YYYY"),
+			descripcion: key.descripcion,
+			posicion: _.random(0, 10),
+			foto: "./assets/noimagen.jpg"
+		}
+	});
+	dataFinix.push( ...result );
+	return dataFinix;
 }
 
 Procedures.tridy = async (req, res) => {
