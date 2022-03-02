@@ -56,12 +56,13 @@ Procedures.nextTridy = async ()=>{
 				}
 				let filtro = await Tblproductos.find( { where: { id: detalle.id_producto } } );
 				filtro = filtro[0];
-				console.log("*****111", filtro )
-				if( !filtro ) await Tblproductos.create( data );
+				//console.log("*****111", filtro )
+				console.log("*****111 Creando..........." )
+				if( !filtro ) { await Procedures.createImage( detalle.id_producto ); await Tblproductos.create( data );}
 				else Tblproductos.update( { id: detalle.id_producto }, 
 					{ 
 						pro_mu_venta: data.pro_mu_venta,
-						pro_categoria: data.pro_categoria,
+						//pro_categoria: data.pro_categoria,
 						pro_marca: data.pro_marca,
 						pro_uni_venta: data.pro_uni_venta,
 						pro_mp_compra: data.pro_mp_compra,
@@ -77,6 +78,21 @@ Procedures.nextTridy = async ()=>{
 		}
 	}
 	console.log("******Completado...........")
+	return true;
+}
+
+Procedures.createImage = async( id )=>{
+	let resultado = Object();
+	let galeria = await Procedures.GetGaleriaProducto( id );
+	for( let row of galeria ){
+		resultado = await Tblproductosimagen.create( 
+			{
+				producto: id,
+				pri_imagen: row.url_imagen,
+				id: row.id_imagen
+			}
+		);
+	}
 	return true;
 }
 
@@ -266,6 +282,34 @@ Procedures.procesoProvedor = async()=>{
 		}
 	}
 	return true;
+}
+
+Procedures.GetGaleriaProducto = async( id )=>{
+	let resultado = Array();
+	let url = `https://triidy.info/serviciosTriidy/Servicio.asmx/GetImagenProducto?id_producto=${ id }&token=jq2gh66o6dxr.54`;
+	let headers = {
+		'authority': 'triidy.info',
+		'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="98", "Google Chrome";v="98"',
+		'accept': 'application/json, text/plain, */*',
+		'sec-ch-ua-mobile': '?0',
+		'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36',
+		'sec-ch-ua-platform': '"Windows"',
+		'origin': 'https://triidy.com',
+		'sec-fetch-site': 'cross-site',
+		'sec-fetch-mode': 'cors',
+		'sec-fetch-dest': 'empty',
+		'referer': 'https://triidy.com/',
+		'accept-language': 'es-US,es-419;q=0.9,es;q=0.8,en;q=0.7,und;q=0.6,pl;q=0.5,pt;q=0.4',
+		'Cookie': 'AWSALB=C8qw6c9yrQNHMIYrqScuLg8weIU0SZu6SbM2vjNcV7Wbbpp65ewxHlPZYj4nGoFYrwtSawLkXaI/QCYie8DwKRYl0H5+jGEOdO+DOI+qUpOAe7v4Wcm1m/KbprOu; AWSALBCORS=C8qw6c9yrQNHMIYrqScuLg8weIU0SZu6SbM2vjNcV7Wbbpp65ewxHlPZYj4nGoFYrwtSawLkXaI/QCYie8DwKRYl0H5+jGEOdO+DOI+qUpOAe7v4Wcm1m/KbprOu'
+	};
+
+	resultado = await HttpService.request(url, "", false, headers, {}, 'GET');
+	//console.log("************", resultado)
+	try {
+		return JSON.parse(resultado) || [];
+	} catch (error) {
+		return [];
+	}
 }
 
 Procedures.GetProvedor = async( )=>{

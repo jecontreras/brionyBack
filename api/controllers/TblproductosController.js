@@ -23,6 +23,7 @@ Procedures.querys = async (req, res) => {
 			row.listTallas = _.orderBy( row.listTallas, ['tal_descripcion'], ['asc'] );
 		}
 		if( row.listaTallas ) row.listTallas = _.orderBy( row.listaTallas, ['tal_descripcion'], ['asc'] );
+		row.galeria = ( await Tblproductosimagen.find( { where: { producto: row.id } } ) ) || [];
 	}
 	return res.ok(resultado);
 }
