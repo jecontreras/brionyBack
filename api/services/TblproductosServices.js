@@ -10,6 +10,7 @@ Procedures.nextTridy = async ()=>{
 		row.articulos = ( await Procedures.articuloProvedor( row.id_tienda ) ) || [];
 		//console.log("*********", row)
 	}
+	console.log("*****1333333", resultado.length )
 	for (let row of resultado ){
 		console.log("///////////////", row.articulos.length )
 		if( !row.articulos ) continue;
