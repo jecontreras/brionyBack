@@ -24,7 +24,7 @@ module.exports.tarea = async function() {
 
     tarea        = new Object()
     tarea.nombre = "Sincronisador de productos"
-    tarea.tiempo = 2
+    tarea.tiempo = 5
     tarea.unidad = "hora"
     tarea.log    = false
     tarea.accion = async function(){
@@ -33,7 +33,7 @@ module.exports.tarea = async function() {
         await TblproductosServices.procesoCategoria();
         await TblproductosServices.nextTridy( );
     }
-    //cron.AgregarTarea(tarea)
+    cron.AgregarTarea(tarea)
 
 
     cron.iniciar();

@@ -4,8 +4,8 @@ const _ = require('lodash');
 Procedures.nextTridy = async ()=>{
 	let resultado = Object();
 	resultado = await Procedures.provedor();
-	let data1 = [ { id_tienda:8368 } ];
-	resultado = data1;
+	/*let data1 = [ { id_tienda:8368 } ];
+	resultado = data1;*/
 	for( let row of resultado ){
 		row.articulos = ( await Procedures.articuloProvedor( row.id_tienda ) ) || [];
 		//console.log("*********", row)
@@ -25,10 +25,10 @@ Procedures.nextTridy = async ()=>{
 					"foto": detalle.imagen,
 					"pro_descripcion": detalle.descripcion + "  "+ detalle.modo_uso || '',
 					"cat_clave_int": 1,
-					"pro_activo": 0,
+					"pro_activo": 1,
 					"pro_mostrar_agotado": 0,
 					"pro_descripcionbreve": "",
-					"pro_codigo": _.camelCase( ( _.split(detalle.nombre, "-") ) [0] ),
+					"pro_codigo": _.camelCase( ( _.split(detalle.nombre, "-") ) [0] ) || detalle.id_producto,
 					"pro_usu_creacion": detalle.id_tienda,
 					"pro_usu_actualiz": "",
 					"pro_fec_actualiz": "",
@@ -52,7 +52,7 @@ Procedures.nextTridy = async ()=>{
 					"listColor": null,
 					"checkMayor": 0,
 					"listPrecios": null,
-					"pro_categoria": 16 || detalle.id_categoria || 2,
+					"pro_categoria": detalle.id_categoria || 2,
 					"pro_sw_tallas": 1
 				}
 				let filtro = await Tblproductos.find( { where: { id: detalle.id_producto } } );
