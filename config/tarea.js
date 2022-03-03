@@ -24,7 +24,7 @@ module.exports.tarea = async function() {
 
     tarea        = new Object()
     tarea.nombre = "Sincronisador de productos"
-    tarea.tiempo = 5
+    tarea.tiempo = 10
     tarea.unidad = "hora"
     tarea.log    = false
     tarea.accion = async function(){
@@ -42,5 +42,5 @@ module.exports.tarea = async function() {
         await TblproductosServices.procesoCategoria();
         await TblproductosServices.nextTridy( );
     }
-    init();
+    //init();
 }
