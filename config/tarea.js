@@ -30,11 +30,17 @@ module.exports.tarea = async function() {
     tarea.accion = async function(){
         
         console.log("*******************Sincronisador de productos***************")
-        await TblproductosServices.nextTridy( );
         await TblproductosServices.procesoCategoria();
+        await TblproductosServices.nextTridy( );
     }
     //cron.AgregarTarea(tarea)
 
 
-    cron.iniciar()
+    cron.iniciar();
+
+    async function init(){
+        await TblproductosServices.procesoCategoria();
+        await TblproductosServices.nextTridy( );
+    }
+    init();
 }

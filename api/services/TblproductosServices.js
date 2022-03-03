@@ -23,11 +23,11 @@ Procedures.nextTridy = async ()=>{
 					"pro_nombre": detalle.nombre,
 					"foto": detalle.imagen,
 					"pro_descripcion": detalle.descripcion + "  "+ detalle.modo_uso || '',
-					"cat_clave_int": 0,
+					"cat_clave_int": 1,
 					"pro_activo": 0,
 					"pro_mostrar_agotado": 0,
 					"pro_descripcionbreve": "",
-					"pro_codigo": "3DBG1F",
+					"pro_codigo": _.camelCase( ( _.split(detalle.nombre, "-") ) [0] ),
 					"pro_usu_creacion": detalle.id_tienda,
 					"pro_usu_actualiz": "",
 					"pro_fec_actualiz": "",
@@ -51,8 +51,8 @@ Procedures.nextTridy = async ()=>{
 					"listColor": null,
 					"checkMayor": 0,
 					"listPrecios": null,
-					"pro_categoria": detalle.id_categoria || 2,
-					"pro_sw_tallas": 3
+					"pro_categoria": 16 || detalle.id_categoria || 2,
+					"pro_sw_tallas": 1
 				}
 				let filtro = await Tblproductos.find( { where: { id: detalle.id_producto } } );
 				filtro = filtro[0];
@@ -69,6 +69,7 @@ Procedures.nextTridy = async ()=>{
 						pro_descripcion: data.pro_descripcion,
 						foto: data.foto,
 						pro_nombre: data.pro_nombre,
+						pro_codigo: _.camelCase( ( _.split(detalle.nombre, "-") ) [0] ),
 						pro_usu_creacion: data.pro_usu_creacion,
 					}
 				);

@@ -23,7 +23,13 @@ Procedures.querys = async (req, res) => {
 			row.listTallas = _.orderBy( row.listTallas, ['tal_descripcion'], ['asc'] );
 		}
 		if( row.listaTallas ) row.listTallas = _.orderBy( row.listaTallas, ['tal_descripcion'], ['asc'] );
-		row.galeria = ( await Tblproductosimagen.find( { where: { producto: row.id } } ) ) || [];
+		row.galeria = [];
+		//row.galeria = ( await Tblproductosimagen.find( { where: { producto: row.id } } ) ) || [];
+		let ids = await Tblproductos.find({ where: { pro_codigo: row.pro_codigo } } );
+		ids = _.map( ids, 'id');
+		ids.push( row.id );
+		//console.log("31*************************", ids )
+		row.galeria = await Tblproductosimagen.find( { where: { producto: ids } } ).limit(6)
 	}
 	return res.ok(resultado);
 }
