@@ -58,22 +58,25 @@ Procedures.nextTridy = async ()=>{
 				let filtro = await Tblproductos.find( { where: { id: detalle.id_producto } } );
 				filtro = filtro[0];
 				//console.log("*****111", filtro )
-				console.log("*****111 Creando..........." )
-				if( !filtro ) { await Procedures.createImage( detalle.id_producto ); await Tblproductos.create( data );}
-				else Tblproductos.update( { id: detalle.id_producto }, 
-					{ 
-						pro_mu_venta: data.pro_mu_venta,
-						//pro_categoria: data.pro_categoria,
-						pro_marca: data.pro_marca,
-						pro_uni_venta: data.pro_uni_venta,
-						pro_mp_compra: data.pro_mp_compra,
-						pro_descripcion: data.pro_descripcion,
-						foto: data.foto,
-						pro_nombre: data.pro_nombre,
-						pro_codigo: _.camelCase( ( _.split(detalle.nombre, "-") ) [0] ),
-						pro_usu_creacion: data.pro_usu_creacion,
-					}
-				);
+				
+				if( !filtro ) { console.log("*****62 Creando..........." ); await Procedures.createImage( detalle.id_producto ); await Tblproductos.create( data );}
+				else {
+					console.log("*****64 Actualizar..........." ); 
+					await Tblproductos.update( { id: detalle.id_producto }, 
+						{ 
+							pro_mu_venta: data.pro_mu_venta,
+							//pro_categoria: data.pro_categoria,
+							pro_marca: data.pro_marca,
+							pro_uni_venta: data.pro_uni_venta,
+							pro_mp_compra: data.pro_mp_compra,
+							pro_descripcion: data.pro_descripcion,
+							foto: data.foto,
+							pro_nombre: data.pro_nombre,
+							pro_codigo: _.camelCase( ( _.split(detalle.nombre, "-") ) [0] ),
+							pro_usu_creacion: data.pro_usu_creacion,
+						}
+					);
+				}
 			} catch (error) {
 				
 			}
