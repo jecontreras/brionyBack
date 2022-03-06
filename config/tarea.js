@@ -33,7 +33,7 @@ module.exports.tarea = async function() {
         await TblproductosServices.procesoCategoria();
         await TblproductosServices.nextTridy( );
     }
-    cron.AgregarTarea(tarea)
+    //cron.AgregarTarea(tarea)
 
 
     cron.iniciar();
