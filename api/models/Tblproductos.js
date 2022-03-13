@@ -112,6 +112,19 @@ module.exports = {
     },
     listPrecios:{
         type: 'json'
+    },
+    listaTallas:{
+        type: 'json'
+    },
+    listaGaleria:{
+        type: 'json'
+    },
+    listDetalles:{  // detalles del producto
+        type: 'json'
+    },
+    pro_vendedor:{
+        type: 'integer',
+        defaultsTo: 0
     }
 
 

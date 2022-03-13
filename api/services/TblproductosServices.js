@@ -101,6 +101,120 @@ Procedures.createImage = async( id )=>{
 	return true;
 }
 
+Procedures.ProLokompro = async( )=>{
+	let resultado = Object();
+	resultado = await Procedures.getLokompro();
+	//console.log("*************107", resultado);
+	for( let row of resultado.data ){	
+		try {
+			let data = {
+				"pro_nombre": row.pro_nombre,
+				"foto": row.foto,
+				"pro_descripcion": row.pro_descripcion,
+				"cat_clave_int": row.cat_clave_int,
+				"pro_activo": row.pro_activo,
+				"pro_mostrar_agotado": row.pro_mostrar_agotado,
+				"pro_descripcionbreve": row.pro_descripcionbreve,
+				"pro_codigo": row.pro_codigo,
+				"pro_usu_creacion": row.pro_usu_creacion.id,
+				"pro_usu_actualiz": row.pro_usu_actualiz,
+				"pro_fec_actualiz": row.pro_fec_actualiz,
+				"pro_uni_compra": row.pro_uni_compra,
+				"pro_pes_compra": row.pro_pes_compra,
+				"pro_unidad_disponible": row.pro_unidad_disponible,
+				"pro_mu_compra": row.pro_mu_compra,
+				"pro_mp_compra": row.pro_mp_compra,
+				"pro_uni_venta": row.pro_uni_venta,
+				"pro_marca": row.pro_marca,
+				"pro_pes_venta": row.pro_pes_venta,
+				"pro_mu_venta": row.pro_mu_venta,
+				"pro_mp_venta": row.pro_mp_venta,
+				"pro_reserva": row.pro_reserva,
+				"pro_estado": row.pro_estado,
+				"pro_tamano": row.pro_tamano,
+				"pro_kilo": row.pro_kilo,
+				"pro_und_kilo": row.pro_und_kilo,
+				"pro_precio_venta_cliente": row.pro_precio_venta_cliente,
+				"tit_clave_int": row.tit_clave_int,
+				"listColor": row.listColor,
+				"checkMayor": row.checkMayor,
+				"listPrecios": row.listPrecios,
+				"pro_categoria": row.pro_categoria.id,
+				"pro_sw_tallas": row.pro_sw_tallas1,
+				pro_sub_categoria: row.pro_sub_categoria,
+				listaGaleria: row.listaGaleria,
+				listDetalles: row.listDetalles,
+				pro_vendedor: row.pro_vendedor,
+				listaTallas: row.listaTallas
+			}
+			/*let filtro = await Tblproductos.find( { where: { id: row.id_producto } } );
+			filtro = filtro[0];*/
+			//console.log("*****111", filtro )
+			//console.log("*****153 ENTRAndo...........", data);
+			let resul = await Tblproductos.create( data );
+			console.log("*****150 Creando...........", resul);
+			/*if( !filtro ) { console.log("*****150 Creando..........." ); await Procedures.createImage( row.id_producto ); await Tblproductos.create( data );}
+			else {
+				console.log("*****64 Actualizar..........." ); 
+				await Tblproductos.update( { id: row.id_producto }, 
+					{ 
+						pro_mu_venta: data.pro_mu_venta,
+						//pro_categoria: data.pro_categoria,
+						pro_marca: data.pro_marca,
+						pro_uni_venta: data.pro_uni_venta,
+						pro_mp_compra: data.pro_mp_compra,
+						pro_descripcion: data.pro_descripcion,
+						foto: data.foto,
+						pro_nombre: data.pro_nombre,
+						pro_codigo: _.camelCase( ( _.split(row.nombre, "-") ) [0] ),
+						pro_usu_creacion: data.pro_usu_creacion,
+					}
+				);
+			}*/
+		} catch (error) {
+			
+		}
+	}
+}
+
+Procedures.getLokompro = async()=>{
+	let resultado = Array();
+	let url = `https://backlocompro.herokuapp.com/tblproductos/querys`;
+	let headers = {
+		'Connection': 'keep-alive',
+		'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"',
+		'Accept': 'application/json, text/plain, */*',
+		'Content-Type': 'application/json',
+		'sec-ch-ua-mobile': '?0',
+		'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36',
+		'sec-ch-ua-platform': '"Windows"',
+		'Origin': 'https://lokomproaqui.com',
+		'Sec-Fetch-Site': 'cross-site',
+		'Sec-Fetch-Mode': 'cors',
+		'Sec-Fetch-Dest': 'empty',
+		'Referer': 'https://lokomproaqui.com/',
+		'Accept-Language': 'es-US,es-419;q=0.9,es;q=0.8,en;q=0.7,und;q=0.6,pl;q=0.5,pt;q=0.4',
+		'Cookie': 'sails.sid=s%3AE6n8Hn9mZtp4HfZ9GILhy4NJhlZgUmc6.bIvVeOFkguQgG3wMfEZjYZhDajhIXuwizOViT8Qff44'
+	};
+	let body = JSON.stringify({
+		"where": {
+		  "pro_activo": 0,
+		  "pro_mp_venta": 0
+		},
+		"page": 0,
+		"limit": 1000000,
+		"skip": 0
+	  });
+
+	resultado = await HttpService.request(url, body, false, headers, {}, 'POST');
+	//console.log("************", resultado)
+	try {
+		return JSON.parse( resultado ) || [];
+	} catch (error) {
+		return [];
+	}
+}
+
 Procedures.getArticulos = async () => {
 	let resultado = Array();
 	let url = `https://triidy.info/serviciosTriidy/Servicio.asmx/GetProductosPrivados?id_tienda=9289&token=jq2gh66o6dxr.54&codigo_pais=57`;

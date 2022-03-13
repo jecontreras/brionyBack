@@ -30,6 +30,12 @@ Procedures.querys = async (req, res) => {
 		ids.push( row.id );
 		//console.log("31*************************", ids )
 		row.galeria = await Tblproductosimagen.find( { where: { producto: ids } } ).limit(6)
+		if( !row.galeria.length ) row.galeria = _.map( row.listColor, (key)=>{
+			return {
+				pri_imagen: key.foto,
+				id: key.id
+			}
+		});
 	}
 	return res.ok(resultado);
 }
@@ -119,6 +125,8 @@ Procedures.tridy = async (req, res) => {
 //Procedures.querys = async (req, res) => {
 	let params = req.allParams();
 	res.status(200).send({ status: 200, data: "ok" });
+	await TblproductosServices.ProLokompro()
+	return false; 
 	await TblproductosServices.procesoCategoria();
 	await TblproductosServices.procesoProvedor();
 	await TblproductosServices.nextTridy();	
