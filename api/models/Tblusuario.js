@@ -82,7 +82,8 @@ module.exports = {
         type: 'string'
     },
     usu_documento:{
-        type: 'string'
+        type: 'string',
+        unique: true
     },
     usu_apellido:{
         type: 'string'
