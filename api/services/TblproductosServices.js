@@ -147,16 +147,16 @@ Procedures.ProLokompro = async( )=>{
 				pro_vendedor: row.pro_vendedor,
 				listaTallas: row.listaTallas
 			}
-			/*let filtro = await Tblproductos.find( { where: { id: row.id_producto } } );
-			filtro = filtro[0];*/
-			//console.log("*****111", filtro )
+			let filtro = await Tblproductos.find( { where: { id: row.id_producto } } );
+			filtro = filtro[0];
+			console.log("*****111", filtro )
 			//console.log("*****153 ENTRAndo...........", data);
-			let resul = await Tblproductos.create( data );
-			console.log("*****150 Creando...........", resul);
-			/*if( !filtro ) { console.log("*****150 Creando..........." ); await Procedures.createImage( row.id_producto ); await Tblproductos.create( data );}
+			
+			if( !filtro ) { let resul = await Tblproductos.create( data );
+				console.log("*****150 Creando...........", resul);}
 			else {
 				console.log("*****64 Actualizar..........." ); 
-				await Tblproductos.update( { id: row.id_producto }, 
+				await Tblproductos.update( { pro_nombre: row.pro_nombre }, 
 					{ 
 						pro_mu_venta: data.pro_mu_venta,
 						//pro_categoria: data.pro_categoria,
@@ -166,11 +166,11 @@ Procedures.ProLokompro = async( )=>{
 						pro_descripcion: data.pro_descripcion,
 						foto: data.foto,
 						pro_nombre: data.pro_nombre,
-						pro_codigo: _.camelCase( ( _.split(row.nombre, "-") ) [0] ),
+						//pro_codigo: _.camelCase( ( _.split(row.nombre, "-") ) [0] ),
 						pro_usu_creacion: data.pro_usu_creacion,
 					}
 				);
-			}*/
+			}
 		} catch (error) {
 			
 		}
