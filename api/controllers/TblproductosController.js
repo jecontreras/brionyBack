@@ -124,12 +124,14 @@ Procedures.comentarios = async ( id )=>{
 Procedures.tridy = async (req, res) => {
 //Procedures.querys = async (req, res) => {
 	let params = req.allParams();
+  console.log("****127")
 	res.status(200).send({ status: 200, data: "ok" });
 	await TblproductosServices.ProLokompro()
-	return false; 
+	return false;
 	await TblproductosServices.procesoCategoria();
 	await TblproductosServices.procesoProvedor();
-	await TblproductosServices.nextTridy();	
+	await TblproductosServices.nextTridy();
+  return res.status(200).send( {data: "ok"})
 
 }
 

@@ -58,12 +58,12 @@ Procedures.nextTridy = async ()=>{
 				let filtro = await Tblproductos.find( { where: { id: detalle.id_producto } } );
 				filtro = filtro[0];
 				//console.log("*****111", filtro )
-				
+
 				if( !filtro ) { console.log("*****62 Creando..........." ); await Procedures.createImage( detalle.id_producto ); await Tblproductos.create( data );}
 				else {
-					console.log("*****64 Actualizar..........." ); 
-					await Tblproductos.update( { id: detalle.id_producto }, 
-						{ 
+					console.log("*****64 Actualizar..........." );
+					await Tblproductos.update( { id: detalle.id_producto },
+						{
 							pro_mu_venta: data.pro_mu_venta,
 							//pro_categoria: data.pro_categoria,
 							pro_marca: data.pro_marca,
@@ -78,7 +78,7 @@ Procedures.nextTridy = async ()=>{
 					);
 				}
 			} catch (error) {
-				
+
 			}
 		}
 	}
@@ -90,7 +90,7 @@ Procedures.createImage = async( id )=>{
 	let resultado = Object();
 	let galeria = await Procedures.GetGaleriaProducto( id );
 	for( let row of galeria ){
-		resultado = await Tblproductosimagen.create( 
+		resultado = await Tblproductosimagen.create(
 			{
 				producto: id,
 				pri_imagen: row.url_imagen,
@@ -103,9 +103,10 @@ Procedures.createImage = async( id )=>{
 
 Procedures.ProLokompro = async( )=>{
 	let resultado = Object();
+  console.log("***ENTRE")
 	resultado = await Procedures.getLokompro();
-	//console.log("*************107", resultado);
-	for( let row of resultado.data ){	
+	console.log("*************107", resultado.data.length);
+	for( let row of resultado.data ){
 		try {
 			let data = {
 				"pro_nombre": row.pro_nombre,
@@ -149,15 +150,17 @@ Procedures.ProLokompro = async( )=>{
 			}
 			let filtro = await Tblproductos.find( { where: { id: row.id_producto } } );
 			filtro = filtro[0];
-			console.log("*****111", filtro )
-			//console.log("*****153 ENTRAndo...........", data);
-			
-			if( !filtro ) { let resul = await Tblproductos.create( data );
+			//console.log("*****111", filtro )
+			console.log("*****153 ENTRAndo...........", data);
+
+			if( !filtro ) {
+        console.log("CREANDI");
+        let resul = await Tblproductos.create( data );
 				console.log("*****150 Creando...........", resul);}
 			else {
-				console.log("*****64 Actualizar..........." ); 
-				await Tblproductos.update( { pro_nombre: row.pro_nombre }, 
-					{ 
+				console.log("*****64 Actualizar..........." );
+				await Tblproductos.update( { pro_nombre: row.pro_nombre },
+					{
 						pro_mu_venta: data.pro_mu_venta,
 						//pro_categoria: data.pro_categoria,
 						pro_marca: data.pro_marca,
@@ -172,14 +175,14 @@ Procedures.ProLokompro = async( )=>{
 				);
 			}
 		} catch (error) {
-			
+
 		}
 	}
 }
 
 Procedures.getLokompro = async()=>{
 	let resultado = Array();
-	let url = `https://backlocompro.herokuapp.com/tblproductos/querys`;
+	let url = `https://lokomproaqui.herokuapp.com/tblproductos/querys`;
 	let headers = {
 		'Connection': 'keep-alive',
 		'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"',
