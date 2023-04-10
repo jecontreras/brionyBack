@@ -37,7 +37,7 @@ Procedures.nextTridy = async ()=>{
 					"pro_unidad_disponible": 0,
 					"pro_mu_compra": 0,
 					"pro_mp_compra": detalle.costo,
-					"pro_uni_venta": detalle.precio_venta,
+					"pro_uni_venta": Number( detalle.precio_venta ) + 5000 ,
 					"pro_marca": detalle.tiendas_que_lo_venden, // empresa que lo vende
 					"pro_pes_venta": 0,
 					"pro_mu_venta": detalle.total_vendidos, // total vendios
@@ -55,7 +55,8 @@ Procedures.nextTridy = async ()=>{
 					"pro_categoria": detalle.id_categoria || 2,
 					"pro_sw_tallas": 1
 				}
-				let filtro = await Tblproductos.find( { where: { id: detalle.id_producto } } );
+				//let filtro = await Tblproductos.find( { where: { id: detalle.id_producto } } );
+        let filtro = []
 				filtro = filtro[0];
 				//console.log("*****111", filtro )
 
