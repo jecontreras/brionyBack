@@ -55,8 +55,7 @@ Procedures.nextTridy = async ()=>{
 					"pro_categoria": detalle.id_categoria || 2,
 					"pro_sw_tallas": 1
 				}
-				//let filtro = await Tblproductos.find( { where: { id: detalle.id_producto } } );
-        let filtro = []
+				let filtro = await Tblproductos.find( { where: { id: detalle.id_producto } } );
 				filtro = filtro[0];
 				//console.log("*****111", filtro )
 
@@ -149,7 +148,8 @@ Procedures.ProLokompro = async( )=>{
 				pro_vendedor: row.pro_vendedor,
 				listaTallas: row.listaTallas
 			}
-			let filtro = await Tblproductos.find( { where: { id: row.id_producto } } );
+			//let filtro = await Tblproductos.find( { where: { id: row.id_producto } } );
+      let filtro = []
 			filtro = filtro[0];
 			//console.log("*****111", filtro )
 			console.log("*****153 ENTRAndo...........", data);
@@ -176,7 +176,7 @@ Procedures.ProLokompro = async( )=>{
 				);
 			}
 		} catch (error) {
-
+      console.log("****EL ERROR", error)
 		}
 	}
 }
