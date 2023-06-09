@@ -14,7 +14,7 @@ Procedures.querys = async (req, res) => {
 	console.log("***", params);
 	resultado = await QuerysServices(Tblproductos, params);
 	for (let row of resultado.data) {
-		row.listComentarios = ( _.orderBy( await Procedures.comentarios( row.id ), ['posicion', 'age'] ) ) || [];
+		row.listComentarios = _.orderBy( await Procedures.comentarios( row.id ), ['posicion', 'age'] );
 		if (row.cat_clave_int) row.cat_clave_int = await Tblcategorias.findOne({ where: { id: row.cat_clave_int } });
 		if (row.pro_categoria) row.pro_categoria = await Tblcategorias.findOne({ where: { id: row.pro_categoria } });
 		if (row.pro_usu_creacion) row.pro_usu_creacion = await Tblproveedor.findOne({ where: { id: row.pro_usu_creacion } });
